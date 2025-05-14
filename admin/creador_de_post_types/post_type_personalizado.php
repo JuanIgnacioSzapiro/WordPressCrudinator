@@ -1,43 +1,64 @@
 <?php
-class CaracteristicasBasicasPostType
+class PostTypePersonalizado extends CaracteristicasMinimasPostType
 {
     private $singular;
     private $plural;
     private $femenino;
+    private $nombre_para_mostrar;
     private $icono;
     private $meta;
+    private $prefijo;
+    private $para_armar_columnas;
     private $incrementador = 0;
-    private $nombre_para_mostrar;
-
-    public function __construct()
-    {
+    public function __construct(
+        $prefijo,
+        $id_post_type,
+        $singular,
+        $nombre_para_mostrar,
+        $plural,
+        $femenino,
+        $icono,
+        $meta,
+        $para_armar_columnas,
+    ) {
+        $this->set_prefijo($prefijo);
+        $this->set_id_post_type($id_post_type);
+        $this->set_singular($singular);
+        $this->set_nombre_para_mostrar($nombre_para_mostrar);
+        $this->set_plural($plural);
+        $this->set_femenino($femenino);
+        $this->set_icono($icono);
+        $this->set_meta($meta);
+        $this->set_para_armar_columnas($para_armar_columnas);
     }
-
+    public function set_prefijo($valor)
+    {
+        $this->prefijo = $valor;
+    }
+    public function get_prefijo()
+    {
+        return $this->prefijo;
+    }
     public function set_singular($valor)
     {
-        $this->singular = $valor;
+        $this->singular = strtolower($valor);
     }
-
     public function get_singular()
     {
         return $this->singular;
     }
-
     public function set_plural($valor)
     {
-        $this->plural = $valor;
+        $this->plural = strtolower($valor);
     }
-
     public function get_plural()
     {
         return $this->plural;
     }
-
     public function get_singular_mayuscula()
     {
         return str_replace('_', ' ', ucfirst($this->get_singular()));
     }
-
     public function get_plural_mayuscula()
     {
         return str_replace('_', ' ', ucfirst($this->get_plural()));
@@ -50,12 +71,10 @@ class CaracteristicasBasicasPostType
     {
         return $this->femenino;
     }
-
     public function set_icono($valor)
     {
         $this->icono = $valor;
     }
-
     public function get_icono()
     {
         return $this->icono;
@@ -64,7 +83,6 @@ class CaracteristicasBasicasPostType
     {
         $this->meta = $valor;
     }
-
     public function get_meta()
     {
         return $this->meta;
@@ -78,12 +96,18 @@ class CaracteristicasBasicasPostType
     {
         $this->nombre_para_mostrar = $valor;
     }
-
     public function get_nombre_para_mostrar()
     {
         return $this->nombre_para_mostrar;
     }
-
+    public function set_para_armar_columnas($valor)
+    {
+        $this->para_armar_columnas = $valor;
+    }
+    public function get_para_armar_columnas()
+    {
+        return $this->para_armar_columnas;
+    }
     public function get_caracteristicas()
     {
         return array(
@@ -102,81 +126,36 @@ class CaracteristicasBasicasPostType
                 'search_items' => __('Buscar'),
                 'not_found' => __('No se encontraron ' . $this->get_plural()),
                 'not_found_in_trash' => __('No se encontraron ' . $this->get_plural() . ' en la basura'),
-                'parent' => __($this->get_plural_mayuscula()),
+                'parent' => __($this->get_id_post_type()),
             ),
             'menu_icon' => $this->get_icono(),
             'show_in_rest' => true,
-            'rest_base' => $this->get_plural(),
+            'rest_base' => $this->get_id_post_type(),
             'has_archive' => true,
             'show_in_menu' => true,
             'supports' => false,
             'exclude_from_search' => false,
-            'capability_type' => $this->get_plural(),
+            'capability_type' => $this->get_id_post_type(),
             'map_meta_cap' => true,
             'menu_position' => $this->get_posicion(),
-            'capabilities' => [
-                'edit_post' => 'edit_' . $this->get_plural(),
-                'read_post' => 'read_' . $this->get_plural(),
-                'delete_post' => 'delete_' . $this->get_plural(),
-                'edit_posts' => 'edit_multiples_' . $this->get_plural(),
-                'edit_others_posts' => 'edit_others_multiples_' . $this->get_plural(),
-                'publish_posts' => 'publish_multiples_' . $this->get_plural(),
-                'read_private_posts' => 'read_private_multiples_' . $this->get_plural(),
-                'delete_posts' => 'delete_multiples_' . $this->get_plural(),
-                'delete_private_posts' => 'delete_private_multiples_' . $this->get_plural(),
-                'delete_published_posts' => 'delete_published_multiples_' . $this->get_plural(),
-                'delete_others_posts' => 'delete_others_multiples_' . $this->get_plural(),
-                'edit_private_posts' => 'edit_private_multiples_' . $this->get_plural(),
-                'edit_published_posts' => 'edit_published_multiples_' . $this->get_plural(),
-                'create_posts' => 'create_multiples_' . $this->get_plural(),
-            ],
+            'capabilities' => $this->get_habilidades(),
         );
-    }
-
-    public function get_habilidades()
-    {
-        return [
-            'edit_post' => 'edit_' . $this->get_plural(),
-            'read_post' => 'read_' . $this->get_plural(),
-            'delete_post' => 'delete_' . $this->get_plural(),
-            'edit_posts' => 'edit_multiples_' . $this->get_plural(),
-            'edit_others_posts' => 'edit_others_multiples_' . $this->get_plural(),
-            'publish_posts' => 'publish_multiples_' . $this->get_plural(),
-            'read_private_posts' => 'read_private_multiples_' . $this->get_plural(),
-            'delete_posts' => 'delete_multiples_' . $this->get_plural(),
-            'delete_private_posts' => 'delete_private_multiples_' . $this->get_plural(),
-            'delete_published_posts' => 'delete_published_multiples_' . $this->get_plural(),
-            'delete_others_posts' => 'delete_others_multiples_' . $this->get_plural(),
-            'edit_private_posts' => 'edit_private_multiples_' . $this->get_plural(),
-            'edit_published_posts' => 'edit_published_multiples_' . $this->get_plural(),
-            'create_posts' => 'create_multiples_' . $this->get_plural(),
-        ];
-    }
-
-    public function get_habilidades_no_admin()
-    {
-        return [
-            'read' => 'read', // Necesario para acceder al área de admin
-            'read_post' => 'read_' . $this->get_plural(), // Ver posts individuales
-            'read_private_posts' => 'read_private_multiples_' . $this->get_plural(), // Ver posts privados
-            'edit_others_posts' => 'edit_others_multiples_' . $this->get_plural(), // Ver posts de otros usuarios
-        ];
     }
 
     public function registrar_post_type()
     {
-        register_post_type($this->get_plural(), $this->get_caracteristicas());
+        register_post_type($this->get_id_post_type(), $this->get_caracteristicas());
     }
 
     public function deregistrar_post_type()
     {
-        unregister_post_type($this->get_plural());
+        unregister_post_type($this->get_id_post_type());
     }
 
     public function obtener_todos_los_post()
     {
         return get_posts(array(
-            'post_type' => $this->get_plural(),
+            'post_type' => $this->get_id_post_type(),
             'numberposts' => -1,
             'post_status' => 'any',
         ));

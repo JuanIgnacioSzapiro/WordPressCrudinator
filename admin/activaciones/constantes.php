@@ -4,7 +4,7 @@ function cargar_configuracion_desde_csv()
 {
     // Ruta al archivo CSV en el directorio del plugin
     $csv_files = array(
-        plugin_dir_path(__FILE__) . '/admin/valores constantes/prefijo.csv'
+        plugin_dir_path(__FILE__) . '/admin/valores_constantes/prefijo.csv'
     );
 
     foreach ($csv_files as $csv_file) {

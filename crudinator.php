@@ -17,6 +17,10 @@ if (!defined('ABSPATH')) { // si la busqueda de la página web no es del path ab
     die('Acceso no permitido');
 } else {
     if (!class_exists('Crudinator')) {
+        require_once plugin_dir_path(__FILE__) . '/activar.php';
+        require_once plugin_dir_path(__FILE__) . '/desactivar.php';
+        require_once plugin_dir_path(__FILE__) . '/desinstalar.php';
+
         register_activation_hook(__FILE__, 'activar_crudinator'); // Lógica de activación
         register_deactivation_hook(__FILE__, 'desactivar_crudinator'); // Lógica de desactivación
         register_uninstall_hook(__FILE__, 'desinstalar_crudinator'); // Lógica de desinstalación
