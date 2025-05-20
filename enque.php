@@ -1,5 +1,7 @@
 <?php
-// Registrar estilos y scripts
+/**
+ * Registro y encolación de estilos (css)
+ */
 function crudinator_cargar_estilos()
 {
     wp_register_style(
@@ -10,7 +12,9 @@ function crudinator_cargar_estilos()
     );
     wp_enqueue_style('crudinator-css');
 }
-
+/**
+ * Registro y encolación de scripts (js)
+ */
 function crudinator_cargar_scripts()
 {
     wp_register_script(

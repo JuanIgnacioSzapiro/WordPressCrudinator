@@ -1,12 +1,17 @@
 <?php
 
+/**
+ * Abre en modo lectura el archivo csv
+ * @return void
+ */
 function cargar_configuracion_desde_csv()
 {
-    // Ruta al archivo CSV en el directorio del plugin
+    // Rutas de los archivos CSV en el directorio del plugin
     $csv_files = array(
-        plugin_dir_path(__FILE__) . '/admin/valores_constantes/prefijo.csv'
+        plugin_dir_path(__FILE__) . '/../valores_constantes/prefijo.csv'
     );
 
+    // Apertura y lectura de los diferentes archivos y creación de las variables globales
     foreach ($csv_files as $csv_file) {
         abridor($csv_file);
     }
@@ -51,11 +56,6 @@ function abridor($csv_file)
 
                 // Crear variables globales dinámicamente
                 $GLOBALS[$global_var_name] = $global_value;
-
-                // Opcional: También definir como constante
-                // if (!defined(strtoupper($global_var_name))) {
-                //     define(strtoupper($global_var_name), $global_value);
-                // }
             }
         }
     }

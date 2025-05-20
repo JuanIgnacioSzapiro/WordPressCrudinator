@@ -1,6 +1,7 @@
 <?php
-//  require_once dirname(__FILE__) . '/admin/desinstalaciones';
-
+/**
+ * Ejecuciones al momento de desinstalación del plugin
+ */
 function desinstalar_crudinator()
 {
     

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Características mínimas que debe tener un tipo de post.
+ ** ASIGNACIÓN DE ID 
+ ** CAPACIDAD DE EXTRAER HABILIDADES sin necesidad de crear un tipo de post
+ */
 class CaracteristicasMinimasPostType
 {
     private $id_post_type;

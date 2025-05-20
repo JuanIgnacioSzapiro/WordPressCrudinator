@@ -1,20 +1,36 @@
 <?php
+require_once dirname(__FILE__) . '/caracteristicas_minimas_post_type.php';
+
+/**
+ * Creador de tipos de post con todos sus componentes
+ */
 class PostTypePersonalizado extends CaracteristicasMinimasPostType
 {
     private $singular;
     private $plural;
     private $femenino;
-    private $nombre_para_mostrar;
     private $icono;
     private $meta;
     private $prefijo;
     private $para_armar_columnas;
     private $incrementador = 0;
+    /**
+     * Constructor de PostTypePersonalizado
+     * @param string $prefijo Se va a utilizar para tener mejor trazabilidad de tablas y valores SQL por lo que no puede repetirse entre sectores
+     * @param string $id_post_type DEBE SER ÚNICO Y NO CONTENER MÁS DE 20 CARACTERES
+     * @param string $singular Valor singular para mostrar en el front end
+     * @param string $plural Valor en plural para mostrar en el front end
+     * @param boolean $femenino Valor booleano (true == femenino / false == masculino) que permite al sistema cambiar el género de los artículos
+     * @param string $icono  WordPress dash-icon importado o nativo 
+     * @param array $meta Metadata (campos y tipos de campos)
+     * @param array $para_armar_columnas Array de los id de los campos que deberían mostrarse.
+     * Si el id pertenece a un campo que es una lista se muestra el primero.
+     * Si está vacío se muestra el título del post.
+     */
     public function __construct(
         $prefijo,
         $id_post_type,
         $singular,
-        $nombre_para_mostrar,
         $plural,
         $femenino,
         $icono,
@@ -24,13 +40,13 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         $this->set_prefijo($prefijo);
         $this->set_id_post_type($id_post_type);
         $this->set_singular($singular);
-        $this->set_nombre_para_mostrar($nombre_para_mostrar);
         $this->set_plural($plural);
         $this->set_femenino($femenino);
         $this->set_icono($icono);
         $this->set_meta($meta);
         $this->set_para_armar_columnas($para_armar_columnas);
     }
+    // Getters y Setters
     public function set_prefijo($valor)
     {
         $this->prefijo = $valor;
@@ -57,11 +73,11 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     }
     public function get_singular_mayuscula()
     {
-        return str_replace('_', ' ', ucfirst($this->get_singular()));
+        return ucfirst($this->get_singular());
     }
     public function get_plural_mayuscula()
     {
-        return str_replace('_', ' ', ucfirst($this->get_plural()));
+        return ucfirst($this->get_plural());
     }
     public function set_femenino($femenino)
     {
@@ -87,18 +103,14 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     {
         return $this->meta;
     }
+    /**
+     * Retorna un valor entero que determina la posición anterior existente y lo retorna incrementado en uno para asignarle al post actual
+     * @return int
+     */
     public function get_posicion()
     {
         $this->incrementador += 1;
         return 1000 + $this->incrementador;
-    }
-    public function set_nombre_para_mostrar($valor)
-    {
-        $this->nombre_para_mostrar = $valor;
-    }
-    public function get_nombre_para_mostrar()
-    {
-        return $this->nombre_para_mostrar;
     }
     public function set_para_armar_columnas($valor)
     {
@@ -111,10 +123,10 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     public function get_caracteristicas()
     {
         return array(
-            'public' => true,
-            'show_ui' => true,
+            'public' => true, // Debe ser true para que sea visible
+            'show_ui' => true, // Muestra la interfaz en el admin
             'labels' => array(
-                'name' => __($this->get_nombre_para_mostrar()),
+                'name' => __($this->get_plural_mayuscula()),
                 'singular_name' => __(str_replace("_", ' ', $this->get_singular_mayuscula())),
                 'add_new' => __('Agregar nuev' . ($this->get_femenino() ? 'a' : 'o')),
                 'add_new_item' => __('Agregar nuev' . ($this->get_femenino() ? 'a' : 'o') . ' ' . $this->get_singular()),
@@ -131,27 +143,31 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
             'menu_icon' => $this->get_icono(),
             'show_in_rest' => true,
             'rest_base' => $this->get_id_post_type(),
-            'has_archive' => true,
-            'show_in_menu' => true,
-            'supports' => false,
+            'has_archive' => true, // Habilita el archivo (ej: /cursos/)
+            'show_in_menu' => true, // Aparece en el menú admin
+            'supports' => false, // Si no hay soporte, no mostrará campos
             'exclude_from_search' => false,
             'capability_type' => $this->get_id_post_type(),
             'map_meta_cap' => true,
             'menu_position' => $this->get_posicion(),
             'capabilities' => $this->get_habilidades(),
+            'show_in_nav_menus' => true // Para aparecer en menús
         );
     }
 
+    /**
+     * Registra el tipo de post actual
+     * @return void
+     */
     public function registrar_post_type()
     {
         register_post_type($this->get_id_post_type(), $this->get_caracteristicas());
     }
 
-    public function deregistrar_post_type()
-    {
-        unregister_post_type($this->get_id_post_type());
-    }
-
+    /**
+     * Devuelve un array con todos los post del tipo actual
+     * @return array<int|WP_Post>
+     */
     public function obtener_todos_los_post()
     {
         return get_posts(array(
@@ -161,6 +177,19 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         ));
     }
 
+    /**
+     * Dregistra tipo de post actual, pero no borra la base de datos
+     * @return void
+     */
+    public function deregistrar_post_type()
+    {
+        unregister_post_type($this->get_id_post_type());
+    }
+
+    /**
+     * Borra la base de datos del tipo de post actual
+     * @return void
+     */
     public function borrar_todos_los_post()
     {
         foreach ($this->obtener_todos_los_post() as $objeto) {

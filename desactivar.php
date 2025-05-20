@@ -1,6 +1,7 @@
 <?php
-// require_once dirname(__FILE__) . '/admin/desactivaciones';
-
+/**
+ * Ejecuciones al momento de desactivacion del plugin
+ */
 function desactivar_crudinator()
 {
 

@@ -1,2 +1,2 @@
-.gitignore
-/admin/valores_constantes/**
+*.gitignore
+**/valores_constantes/

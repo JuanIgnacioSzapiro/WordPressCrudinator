@@ -35,11 +35,16 @@ class TipoDeRol
         $this->habilidades = $valor;
     }
 
+    /**
+     * Agrega el rol a la pila existente
+     */
     public function agregar_rol()
     {
         add_role($this->id, $this->nombre_para_mostrar, $this->habilidades);
     }
-
+    /**
+     * Elimina el rol de la pila existente
+     */
     public function borrar_rol()
     {
         remove_role($this->get_id());
