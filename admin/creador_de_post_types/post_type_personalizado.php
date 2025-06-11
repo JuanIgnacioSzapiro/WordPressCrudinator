@@ -10,7 +10,7 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     private $plural;
     private $femenino;
     private $icono;
-    private $meta;
+    private $cajas_de_metadata;
     private $prefijo;
     private $para_armar_columnas;
     private $incrementador = 0;
@@ -22,7 +22,7 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
      * @param string $plural Valor en plural para mostrar en el front end
      * @param boolean $femenino Valor booleano (true == femenino / false == masculino) que permite al sistema cambiar el género de los artículos
      * @param string $icono  WordPress dash-icon importado o nativo 
-     * @param array $meta Metadata (campos y tipos de campos)
+     * @param CajasDeMetadata $cajas_de_metadata cajas_de_metadata (campos y tipos de campos)
      * @param array $para_armar_columnas Array de los id de los campos que deberían mostrarse.
      * Si el id pertenece a un campo que es una lista se muestra el primero.
      * Si está vacío se muestra el título del post.
@@ -34,7 +34,7 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         $plural,
         $femenino,
         $icono,
-        $meta,
+        $cajas_de_metadata,
         $para_armar_columnas,
     ) {
         $this->set_prefijo($prefijo);
@@ -43,8 +43,10 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         $this->set_plural($plural);
         $this->set_femenino($femenino);
         $this->set_icono($icono);
-        $this->set_meta($meta);
+        $this->set_cajas_de_metadata($cajas_de_metadata);
         $this->set_para_armar_columnas($para_armar_columnas);
+
+        $this->inicializar_cajas_de_metadata();
     }
     // Getters y Setters
     public function set_prefijo($valor)
@@ -95,13 +97,13 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     {
         return $this->icono;
     }
-    public function set_meta($valor)
+    public function set_cajas_de_metadata($valor)
     {
-        $this->meta = $valor;
+        $this->cajas_de_metadata = $valor;
     }
-    public function get_meta()
+    public function get_cajas_de_metadata()
     {
-        return $this->meta;
+        return $this->cajas_de_metadata;
     }
     /**
      * Retorna un valor entero que determina la posición anterior existente y lo retorna incrementado en uno para asignarle al post actual
@@ -195,5 +197,34 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         foreach ($this->obtener_todos_los_post() as $objeto) {
             wp_delete_post($objeto->ID, true);
         }
+    }
+    /**
+     * Inicializa en orden todos los datos de las cajas de metadata necesarios y genera las mismas al final
+     */
+    public function inicializar_cajas_de_metadata(){
+        $this->seder_id_post_type_perteneciente();
+        $this->seder_nombre_de_editor();
+        $this->generar_cajas_de_metadata();
+    }
+    /**
+     *  Permite a la vincular la página de edición al post type
+     */
+    public function seder_id_post_type_perteneciente()
+    {
+        $this->cajas_de_metadata->set_id_post_type_perteneciente($this->get_id_post_type());
+    }
+    /**
+     * Permite a la página de edición incorporar el singular en el título
+     */
+    protected function seder_nombre_de_editor()
+    {
+        $this->cajas_de_metadata->set_titulo_del_editor($this->get_singular());
+    }
+    /**
+     * Una vez inicializados todos los datos, las cajas de metadata pueden ser creadas
+     */
+    public function generar_cajas_de_metadata()
+    {
+        $this->cajas_de_metadata->crear_cajas_de_metadata();
     }
 }

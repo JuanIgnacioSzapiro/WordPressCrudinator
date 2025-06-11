@@ -8,6 +8,7 @@
 function espiar($texto, $data)
 {
     error_log($texto . ': ' . print_r($data, true));
+    echo $texto . ': ' . print_r($data, true);
     return $data;
 }
 

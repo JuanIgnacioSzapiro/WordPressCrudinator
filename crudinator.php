@@ -28,9 +28,10 @@ require_once plugin_dir_path(__FILE__) . 'enque.php';
 
 require_once dirname(__FILE__) . '/admin/activaciones/constantes.php';
 
-require_once plugin_dir_path(__FILE__) . 'admin/activaciones/activar_post_types_secr_ext.php';
-require_once plugin_dir_path(__FILE__) . 'admin/activaciones/activar_roles_secr_ext.php';
 require_once plugin_dir_path(__FILE__) . 'admin/funciones.php';
+
+require_once plugin_dir_path(__FILE__) . 'admin/areas/secretaria_de_extension/activaciones/activar_post_types_secr_ext.php';
+require_once plugin_dir_path(__FILE__) . 'admin/areas/secretaria_de_extension/activaciones/activar_roles_secr_ext.php';
 
 if (!class_exists('Crudinator')) {
     /**

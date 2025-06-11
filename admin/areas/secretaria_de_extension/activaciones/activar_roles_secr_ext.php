@@ -27,7 +27,7 @@ function activar_habilidades_secr_ext($roles)
 
     // Totalida de habilidades, principalmente usada para administradores
     $total = array(
-        new CaracteristicasMinimasPostType('curso'),
+        new CaracteristicasMinimasPostType('MiTest'),
     );
 
     // Asignación según rol de habilidades
