@@ -30,8 +30,8 @@ require_once dirname(__FILE__) . '/admin/activaciones/constantes.php';
 
 require_once plugin_dir_path(__FILE__) . 'admin/funciones.php';
 
-require_once plugin_dir_path(__FILE__) . 'admin/areas/secretaria_de_extension/activaciones/activar_post_types_secr_ext.php';
-require_once plugin_dir_path(__FILE__) . 'admin/areas/secretaria_de_extension/activaciones/activar_roles_secr_ext.php';
+require_once plugin_dir_path(__FILE__) . 'admin/areas/ejemplo_de_uso/activaciones/activar_post_types_ejemplo_de_uso.php';
+require_once plugin_dir_path(__FILE__) . 'admin/areas/ejemplo_de_uso/activaciones/activar_roles_secr_ext_ejemplo_de_uso.php';
 
 if (!class_exists('Crudinator')) {
     /**
@@ -64,7 +64,7 @@ if (!class_exists('Crudinator')) {
          */
         public function cargar_tipos_de_post()
         {
-            activar_post_types_secr_ext(); // Activación de tipos de post
+            activar_post_types_ejemplo_de_uso(); // Activación de tipos de post
         }
 
         /**
@@ -73,7 +73,7 @@ if (!class_exists('Crudinator')) {
          */
         public function cargar_roles()
         {
-            activar_roles_secr_ext(); // Activación de roles
+            activar_roles_ejemplo_de_uso(); // Activación de roles
         }
     }
 

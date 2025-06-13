@@ -2,7 +2,7 @@
 /**
  * Creación de roles y asignación de habilidades a roles preexistentes y nuevos
  */
-function activar_roles_secr_ext()
+function activar_roles_ejemplo_de_uso()
 {
     // Array con todos los roles como objeto tipo TipoDeRol
     $roles = array();
@@ -13,14 +13,14 @@ function activar_roles_secr_ext()
     }
 
     // Asignación de habilidades
-    activar_habilidades_secr_ext($roles);
+    activar_habilidades_ejemplo_de_uso($roles);
 }
 
 /**
  * Asignación de habilidades a roles preexistentes y nuevos
  * @param array $roles
  */
-function activar_habilidades_secr_ext($roles)
+function activar_habilidades_ejemplo_de_uso($roles)
 {
     // Se agrega el rol de administrador al final
     array_push($roles, 'administrator');

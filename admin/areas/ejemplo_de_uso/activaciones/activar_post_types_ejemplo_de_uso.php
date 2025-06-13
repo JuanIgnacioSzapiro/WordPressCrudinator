@@ -3,16 +3,17 @@ require_once dirname(__FILE__) . '/../../../creador_de_post_types/post_type_pers
 require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas_de_metadata.php';
 require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_texto.php';
 require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_area_de_texto.php';
+require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/checkbox.php';
 
 
 /**
  * Creación y registro de todos los tipos de post
  * @return void
  */
-function activar_post_types_secr_ext()
+function activar_post_types_ejemplo_de_uso()
 {
     $cursos = new PostTypePersonalizado(
-        $GLOBALS['prefijo_secr_ext'],
+        $GLOBALS['prefijo_ejemplo_de_uso'],
         'MiTest',
         'Mi Test',
         'Mis Test',
@@ -55,6 +56,12 @@ function activar_post_types_secr_ext()
                     'Texto ejemplificación de área de texto',
                     'Descripción de área de texto',
                     true
+                ),
+                new Checkbox(
+                    'checkboxBasico',
+                    'Etiqueta de checkbox',
+                    'Descripción de checkbox',
+                    ['Opción 1', 'Opción 2', 'Opción 3'],
                 ),
             ]
         ),
