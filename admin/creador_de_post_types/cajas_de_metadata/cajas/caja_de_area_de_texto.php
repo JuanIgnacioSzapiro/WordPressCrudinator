@@ -1,13 +1,13 @@
 <?php
 require_once dirname(__FILE__) . '/../caracteristicas_minimas_caja_de_metadata.php';
 
-class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
+class CajaDeAreaDeTexto extends CaracteristicasMinimasCajaDeMetadata
 {
     protected $texto_ejemplificatorio;
     protected $expresion_regular;
     protected $mensaje_aclaratorio_de_expresion_regular;
     /**
-     * Constructor de CajaDeTexto
+     * Constructor de CajaDeAreaDeTexto
      * @param string $id_caja_metadata
      * @param string $etiqueta_caja_de_metadata
      * @param string $texto_ejemplificatorio
@@ -67,13 +67,6 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
                 $this->generar_html_label_opcional();
             }
             $this->generar_html_descripcion();
-            if ($this->get_mensaje_aclaratorio_de_expresion_regular() != "") {
-                ?>
-                <p class="description">
-                    <?php echo esc_html($this->get_mensaje_aclaratorio_de_expresion_regular()); ?>
-                </p>
-                <?php
-            }
             if (!$this->get_clonable()) {
                 $this->generar_fragmento_html_no_clonable();
             } else {
@@ -86,55 +79,57 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
     protected function generar_fragmento_html_no_clonable()
     {
         ?>
-        <p>
-            <input type="text" id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>"
-                name="<?php echo esc_attr($this->get_id_caja_metadata()); ?>" value="<?php ?>"
-                placeholder="<?php echo esc_attr($this->get_texto_ejemplificatorio()); ?>" style="width: 100%; margin: 0%;" />
-        </p>
+        <textarea onfocus="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+            id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>[]"
+            name="<?php echo esc_attr($this->get_id_caja_metadata()); ?>[]"
+            placeholder="<?php echo esc_attr($this->get_texto_ejemplificatorio()); ?>" style="width: 100%;"><?php ?></textarea>
         <?php
     }
     protected function generar_fragmento_html_clonable()
     {
         ?>
-        <div class="clonable-container-texto">
-            <div class="clonable-fields-texto">
+        <div class="clonable-container-area-de-texto">
+            <div class="clonable-fields-area-de-texto">
                 <?php
                 // Always render at least ONE field (even if empty)
                 if (empty($values)) {
                     $values = [''];
                 }
                 foreach ($values as $contador => $value) { ?>
-                    <div class="clonable-field-texto">
-                        <input type="text" id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>[]"
-                            name="<?php echo esc_attr($this->get_id_caja_metadata()); ?>[]" value="<?php ?>"
+                    <div class="clonable-field-area-de-texto">
+                        <textarea onfocus="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+                            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+                            id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>[]"
+                            name="<?php echo esc_attr($this->get_id_caja_metadata()); ?>[]"
                             placeholder="<?php echo esc_attr($this->get_texto_ejemplificatorio()); ?>"
-                            style="width: 100%; margin-bottom: 5px;" />
-                        <button type="button" class="button remove-field-texto">Eliminar</button>
+                            style="width: 100%;"><?php ?></textarea>
+                        <button type="button" class="button remove-field-area-de-texto">Eliminar</button>
                     </div>
                 <?php } ?>
             </div>
-            <button type="button" class="button add-field-texto">Agregar más</button>
+            <button type="button" class="button add-field-area-de-texto">Agregar más</button>
         </div>
         <script>
             (function ($) {
                 // Only define once in global scope
-                if (typeof window.initClonableFields_texto !== 'function') {
-                    window.initClonableFields_texto = function () {
+                if (typeof window.initClonableFields_area !== 'function') {
+                    window.initClonableFields_area = function () {
                         $(document)
-                            .off('click', '.clonable-container-texto .add-field-texto') // Prevent duplicate bindings
-                            .on('click', '.clonable-container-texto .add-field-texto', function (e) {
+                            .off('click', '.clonable-container-area-de-texto .add-field-area-de-texto') // Prevent duplicate bindings
+                            .on('click', '.clonable-container-area-de-texto .add-field-area-de-texto', function (e) {
                                 e.preventDefault();
-                                const container = $(this).closest('.clonable-container-texto');
-                                const newField = container.find('.clonable-field-texto:last').clone();
-                                newField.find('input').val('');
-                                container.find('.clonable-fields-texto').append(newField);
+                                const container = $(this).closest('.clonable-container-area-de-texto');
+                                const newField = container.find('.clonable-field-area-de-texto:last').clone();
+                                newField.find('textarea').val('');
+                                container.find('.clonable-fields-area-de-texto').append(newField);
                             })
-                            .off('click', '.clonable-container-texto .remove-field-texto')
-                            .on('click', '.clonable-container-texto .remove-field-texto', function (e) {
+                            .off('click', '.clonable-container-area-de-texto .remove-field-area-de-texto')
+                            .on('click', '.clonable-container-area-de-texto .remove-field-area-de-texto', function (e) {
                                 e.preventDefault();
-                                const container = $(this).closest('.clonable-container-texto');
-                                if (container.find('.clonable-field-texto').length > 1) {
-                                    $(this).closest('.clonable-field-texto').remove();
+                                const container = $(this).closest('.clonable-container-area-de-texto');
+                                if (container.find('.clonable-field-area-de-texto').length > 1) {
+                                    $(this).closest('.clonable-field-area-de-texto').remove();
                                 }
                             });
                     };
@@ -142,9 +137,9 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
 
                 // Initialize when DOM is ready
                 $(document).ready(function () {
-                    if (!window.clonableFieldsInitialized_texto) {
-                        window.initClonableFields_texto();
-                        window.clonableFieldsInitialized_texto = true;
+                    if (!window.clonableFieldsInitialized_area_de_texto) {
+                        window.initClonableFields_area();
+                        window.clonableFieldsInitialized_area_de_texto = true;
                     }
                 });
             })(jQuery);

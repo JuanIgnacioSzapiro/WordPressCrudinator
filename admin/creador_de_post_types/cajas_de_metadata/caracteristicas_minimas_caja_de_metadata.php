@@ -86,4 +86,32 @@ class CaracteristicasMinimasCajaDeMetadata
         <p>El campo con id '<?php $this->get_id_caja_metadata() ?>' no está disponible</p>
         <?php
     }
+
+    protected function generar_html_label_no_opcional()
+    {
+        ?>
+        <label for="<?php echo esc_attr($this->get_id_caja_metadata()); ?>">
+            <?php echo esc_html($this->get_etiqueta_caja_de_metadata()); ?>
+        </label>
+        <?php
+    }
+    protected function generar_html_label_opcional()
+    {
+        ?>
+        <label class="no-opcional" for="<?php echo esc_attr($this->get_id_caja_metadata()); ?>">
+            <?php echo esc_html($this->get_etiqueta_caja_de_metadata()); ?> *
+        </label>
+        <div class="no-opcional-comentario">
+            Este campo es OBLIGATORIO
+        </div>
+        <?php
+    }
+    protected function generar_html_descripcion()
+    {
+        ?>
+        <p class="description">
+            <?php echo esc_html($this->get_descripcion_caja_de_metadata()); ?>
+        </p>
+        <?php
+    }
 }
