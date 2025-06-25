@@ -31,7 +31,7 @@ require_once dirname(__FILE__) . '/admin/activaciones/constantes.php';
 require_once plugin_dir_path(__FILE__) . 'admin/funciones.php';
 
 require_once plugin_dir_path(__FILE__) . 'admin/areas/ejemplo_de_uso/activaciones/activar_post_types_ejemplo_de_uso.php';
-require_once plugin_dir_path(__FILE__) . 'admin/areas/ejemplo_de_uso/activaciones/activar_roles_secr_ext_ejemplo_de_uso.php';
+require_once plugin_dir_path(__FILE__) . 'admin/areas/ejemplo_de_uso/activaciones/activar_roles_ejemplo_de_uso.php';
 
 if (!class_exists('Crudinator')) {
     /**

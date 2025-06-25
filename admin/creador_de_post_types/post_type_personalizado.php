@@ -1,19 +1,20 @@
 <?php
-require_once dirname(__FILE__) . '/caracteristicas_minimas_post_type.php';
+require_once dirname(__FILE__) . '/cajas_de_metadata/cajas_de_metadata.php';
+require_once dirname(__FILE__) . '/manejo_de_wordpress.php';
+require_once dirname(__FILE__) . '/columnas/columnas.php';
 
 /**
  * Creador de tipos de post con todos sus componentes
  */
-class PostTypePersonalizado extends CaracteristicasMinimasPostType
+class PostTypePersonalizado extends ManejoDeWordpress
 {
     private $singular;
     private $plural;
     private $femenino;
     private $icono;
     private $cajas_de_metadata;
-    private $prefijo;
-    private $para_armar_columnas;
     private $incrementador = 0;
+    private $columnas_de_wordpress;
     /**
      * Constructor de PostTypePersonalizado
      * @param string $prefijo Se va a utilizar para tener mejor trazabilidad de tablas y valores SQL por lo que no puede repetirse entre sectores
@@ -28,7 +29,6 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
      * Si está vacío se muestra el título del post.
      */
     public function __construct(
-        $prefijo,
         $id_post_type,
         $singular,
         $plural,
@@ -37,8 +37,7 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         $cajas_de_metadata,
         $para_armar_columnas,
     ) {
-        $this->set_prefijo($prefijo);
-        $this->set_id_post_type($id_post_type);
+        $this->set_id_post_type(strtolower($id_post_type));
         $this->set_singular($singular);
         $this->set_plural($plural);
         $this->set_femenino($femenino);
@@ -49,14 +48,6 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         $this->inicializar_cajas_de_metadata();
     }
     // Getters y Setters
-    public function set_prefijo($valor)
-    {
-        $this->prefijo = $valor;
-    }
-    public function get_prefijo()
-    {
-        return $this->prefijo;
-    }
     public function set_singular($valor)
     {
         $this->singular = strtolower($valor);
@@ -114,13 +105,13 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
         $this->incrementador += 1;
         return 1000 + $this->incrementador;
     }
-    public function set_para_armar_columnas($valor)
+    public function get_columnas_de_wordpress()
     {
-        $this->para_armar_columnas = $valor;
+        return $this->columnas_de_wordpress;
     }
-    public function get_para_armar_columnas()
+    public function set_columnas_de_wordpress()
     {
-        return $this->para_armar_columnas;
+        $this->columnas_de_wordpress = new ColumnasDeWordpress($this->get_para_armar_columnas(), $this->get_id_post_type());
     }
     public function get_caracteristicas()
     {
@@ -164,6 +155,8 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     public function registrar_post_type()
     {
         register_post_type($this->get_id_post_type(), $this->get_caracteristicas());
+        
+        $this->set_columnas_de_wordpress();
     }
 
     /**
@@ -201,7 +194,8 @@ class PostTypePersonalizado extends CaracteristicasMinimasPostType
     /**
      * Inicializa en orden todos los datos de las cajas de metadata necesarios y genera las mismas al final
      */
-    public function inicializar_cajas_de_metadata(){
+    public function inicializar_cajas_de_metadata()
+    {
         $this->seder_id_post_type_perteneciente();
         $this->seder_nombre_de_editor();
         $this->generar_cajas_de_metadata();

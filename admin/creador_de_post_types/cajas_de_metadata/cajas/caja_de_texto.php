@@ -6,6 +6,8 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
     protected $texto_ejemplificatorio;
     protected $expresion_regular;
     protected $mensaje_aclaratorio_de_expresion_regular;
+    protected $es_clave;
+
     /**
      * Constructor de CajaDeTexto
      * @param string $id_caja_metadata
@@ -13,6 +15,7 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
      * @param string $texto_ejemplificatorio
      * @param string $descripcion_caja_de_metadata
      * @param bool $clonable
+     * @param bool $es_clave
      * @param bool $opcional
      */
     public function __construct(
@@ -21,6 +24,7 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
         $texto_ejemplificatorio,
         $descripcion_caja_de_metadata,
         $clonable,
+        $es_clave = false,
         $opcional = true
     ) {
         $this->set_id_caja_metadata($id_caja_metadata);
@@ -28,6 +32,7 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
         $this->set_texto_ejemplificatorio($texto_ejemplificatorio);
         $this->set_descripcion_caja_de_metadata($descripcion_caja_de_metadata);
         $this->set_clonable($clonable);
+        $this->set_es_clave($es_clave);
         $this->set_opcional($opcional);
     }
     public function set_texto_ejemplificatorio($valor)
@@ -37,6 +42,14 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
     public function get_texto_ejemplificatorio()
     {
         return $this->texto_ejemplificatorio;
+    }
+    public function set_es_clave($valor)
+    {
+        $this->es_clave = $valor;
+    }
+    public function get_es_clave()
+    {
+        return $this->es_clave;
     }
     /**
      * Se utiliza cuando la casilla de texto va a tener un formato específico
@@ -87,7 +100,7 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
     {
         ?>
         <p>
-            <input type="text" id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>"
+            <input type="<?php echo !$this->get_es_clave()?'text':'password' ?>" id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>"
                 name="<?php echo esc_attr($this->get_id_caja_metadata()); ?>" value="<?php ?>"
                 placeholder="<?php echo esc_attr($this->get_texto_ejemplificatorio()); ?>" style="width: 100%; margin: 0%;" />
         </p>

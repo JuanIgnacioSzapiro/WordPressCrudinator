@@ -27,7 +27,7 @@ function activar_habilidades_ejemplo_de_uso($roles)
 
     // Totalida de habilidades, principalmente usada para administradores
     $total = array(
-        new CaracteristicasMinimasPostType('MiTest'),
+        new CaracteristicasMinimasPostType('mi_test'),
     );
 
     // Asignación según rol de habilidades
