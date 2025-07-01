@@ -1,18 +1,18 @@
 <?php
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/post_type_personalizado.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas_de_metadata.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_texto.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_area_de_texto.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/checkbox.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/caja_drop_down_predefinido.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_fecha.php';
-require_once dirname(__FILE__) . '/../../../creador_de_post_types/cajas_de_metadata/cajas/cajas_de_archivos.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/post_type_personalizado.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas_de_metadata.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_texto.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_area_de_texto.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas/checkbox.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas/caja_drop_down_predefinido.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas/caja_de_fecha.php';
+require_once dirname(__FILE__) . '/../../creador_de_post_types/cajas_de_metadata/cajas/cajas_de_archivos.php';
 
 /**
  * Creación y registro de todos los tipos de post
- * @return void
+ * @return array
  */
-function activar_post_types_ejemplo_de_uso()
+function obtener_ejemplo_de_uso()
 {
     $cursos = new PostTypePersonalizado(
         'mi_test',
@@ -98,11 +98,10 @@ function activar_post_types_ejemplo_de_uso()
         ),
         array()
     );
-
     $textoConExpresionRegular->set_formato_de_texto(
         '/[A-z]/',
         'Se aceptan únicamente letras'
     );
-
-    $cursos->registrar_post_type();
+    
+    return array($cursos);
 }

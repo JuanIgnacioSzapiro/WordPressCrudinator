@@ -1,8 +1,9 @@
 <?php
 /**
  * Creación de roles y asignación de habilidades a roles preexistentes y nuevos
+ *  * @param array $post_types
  */
-function activar_roles_ejemplo_de_uso()
+function activar_roles_ejemplo_de_uso($post_types)
 {
     // Array con todos los roles como objeto tipo TipoDeRol
     $roles = array();
@@ -13,29 +14,24 @@ function activar_roles_ejemplo_de_uso()
     }
 
     // Asignación de habilidades
-    activar_habilidades_ejemplo_de_uso($roles);
+    activar_habilidades_ejemplo_de_uso($roles, $post_types);
 }
-
 /**
  * Asignación de habilidades a roles preexistentes y nuevos
  * @param array $roles
+ * @param array $post_types
  */
-function activar_habilidades_ejemplo_de_uso($roles)
+function activar_habilidades_ejemplo_de_uso($roles, $post_types)
 {
     // Se agrega el rol de administrador al final
     array_push($roles, 'administrator');
-
-    // Totalida de habilidades, principalmente usada para administradores
-    $total = array(
-        new CaracteristicasMinimasPostType('mi_test'),
-    );
 
     // Asignación según rol de habilidades
     foreach ($roles as $rol) {
         $rol_obtenido = get_role(is_a($rol, 'TipoDeRol') ? $rol->get_id() : $rol);
         switch ($rol_obtenido->name) {
             case 'administrator': { // Al administrador se le asigna la totalidad de habilidades existentes
-                foreach ($total as $individual) {
+                foreach ($post_types as $individual) {
                     foreach ($individual->get_habilidades() as $valor) {
                         $rol_obtenido->add_cap($valor);
                     }
