@@ -101,7 +101,7 @@ class CajasDeMetadata
         <div class="meta-box">
             <?php
             if (!empty($this->get_contenido())) {
-                $repetido = $this->checkear_id_cajas_metadate_repetidas();
+                $repetido = $this->checkear_id_cajas_metadata_repetidas();
                 if ($repetido == "") {
                     foreach ($this->get_contenido() as $caja_metadata_individual) {
                         ?>
@@ -126,7 +126,7 @@ class CajasDeMetadata
         </div>
         <?php
     }
-    protected function checkear_id_cajas_metadate_repetidas()
+    protected function checkear_id_cajas_metadata_repetidas()
     {
         $repetido = "";
         $ids_de_contenido = array_map(function ($caja_metadata_individual) {

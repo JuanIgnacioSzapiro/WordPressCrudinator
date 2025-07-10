@@ -20,6 +20,8 @@ class CajaDeFecha extends CaracteristicasMinimasCajaDeMetadata
         $this->set_etiqueta_caja_de_metadata($etiqueta_caja_de_metadata);
         $this->set_descripcion_caja_de_metadata($descripcion_caja_de_metadata);
         $this->set_opcional($opcional);
+
+        $this->set_tipo_de_dato_sql('DATE');
     }
     public function generar_fragmento_html($post)
     {

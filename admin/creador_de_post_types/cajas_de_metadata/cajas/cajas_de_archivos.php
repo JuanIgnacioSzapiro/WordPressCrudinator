@@ -22,6 +22,8 @@ class CajaDeArchivos extends CaracteristicasMinimasCajaDeMetadata
         $this->set_descripcion_caja_de_metadata($descripcion_caja_de_metadata);
         $this->set_filtro_de_archivo($filtro_de_archivo);
         $this->set_opcional($opcional);
+
+        $this->set_tipo_de_dato_sql('INT');
     }
     public function get_filtro_de_archivo()
     {

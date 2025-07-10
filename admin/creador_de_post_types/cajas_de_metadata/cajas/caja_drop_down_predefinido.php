@@ -10,7 +10,6 @@ class CajaDropDown extends CaracteristicasMinimasCajaDeMetadata
      * @param string $etiqueta_caja_de_metadata
      * @param string $descripcion_caja_de_metadata
      * @param array $opciones
-     * @param bool $clonable
      * @param bool $opcional
      */
     public function __construct(
@@ -18,15 +17,15 @@ class CajaDropDown extends CaracteristicasMinimasCajaDeMetadata
         $etiqueta_caja_de_metadata,
         $descripcion_caja_de_metadata,
         $opciones,
-        $clonable,
         $opcional = true
     ) {
         $this->set_id_caja_metadata($id_caja_metadata);
         $this->set_etiqueta_caja_de_metadata($etiqueta_caja_de_metadata);
         $this->set_descripcion_caja_de_metadata($descripcion_caja_de_metadata);
         $this->set_opciones($opciones);
-        $this->set_clonable($clonable);
         $this->set_opcional($opcional);
+
+        $this->set_tipo_de_dato_sql('VARCHAR(255)');
     }
     public function get_opciones()
     {

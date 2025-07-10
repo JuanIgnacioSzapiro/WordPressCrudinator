@@ -80,7 +80,6 @@ function obtener_ejemplo_de_uso()
                     'Descripción de dropdown predeterminado',
                     ['Opción 1', 'Opción 2', 'Opción 3'],
                     false,
-                    false,
                 ),
                 new CajaDeFecha(
                     'caja_de_fecha_basica',

@@ -24,6 +24,9 @@ require_once dirname(__FILE__) . '/admin/areas/ejemplo_de_uso/ejemplo_de_uso.php
 require_once dirname(__FILE__) . '/admin/areas/ejemplo_de_uso/activaciones/activar_tipos_de_post_ejemplo_de_uso.php';
 require_once dirname(__FILE__) . '/admin/areas/ejemplo_de_uso/activaciones/activar_roles_ejemplo_de_uso.php';
 
+require_once dirname(__FILE__) . '/admin/activaciones/globales.php';
+cargar_superlobales();
+
 if (!class_exists('Crudinator')) {
     /**
      * Crudinator es la clase principal de este plugin
@@ -33,12 +36,12 @@ if (!class_exists('Crudinator')) {
         protected $ejemplo_de_uso;
         public function __construct()
         {
-            $this->set_ejemplo_de_uso(array_merge(obtener_ejemplo_de_uso()));
+            $this->set_ejemplo_de_uso(obtener_ejemplo_de_uso());
 
             // Registrar hooks de estado
-            register_activation_hook(__FILE__, 'activar_crudinator');
-            register_deactivation_hook(__FILE__, 'desactivar_crudinator');
-            register_uninstall_hook(__FILE__, 'desinstalar_crudinator');
+            register_activation_hook(__FILE__, array($this, 'llamar_activacion'));
+            register_deactivation_hook(__FILE__, array($this, 'llamar_desactivacion'));
+            register_uninstall_hook(__FILE__, 'Crudinator::llamar_desinstalacion'); // La desactivación siempre debe ser una función estática
 
             add_action('init', array($this, 'cargar_tipos_de_post')); // Carga de tipos de post
             add_action('init', array($this, 'cargar_roles')); // Carga de roles
@@ -55,17 +58,41 @@ if (!class_exists('Crudinator')) {
          * Creación y registro de los diferentes tipos de post
          * @return void
          */
-        function cargar_tipos_de_post()
+        public function cargar_tipos_de_post()
         {
-            activar_tipos_de_post_ejemplo_de_uso($this->get_ejemplo_de_uso());
+            registrar_tipos_de_post_ejemplo_de_uso($this->get_ejemplo_de_uso());
         }
         /**
          * Creación de roles y asignación de habilidades a roles preexistentes y nuevos
          * @return void
          */
-        function cargar_roles()
+        public function cargar_roles()
         {
             activar_roles_ejemplo_de_uso($this->get_ejemplo_de_uso()); // Activación de roles
+        }
+        /**
+         * Activación del plugin
+         * @return void
+         */
+        public function llamar_activacion()
+        {
+            activar_crudinator(array_merge(array($GLOBALS['ejemplo_de_uso'] => $this->get_ejemplo_de_uso())), obtener_campos_listables());
+        }
+        /**
+         * Desactivación del plugin
+         * @return void
+         */
+        public function llamar_desactivacion()
+        {
+            desactivar_crudinator(array_merge(array($GLOBALS['ejemplo_de_uso'] => $this->get_ejemplo_de_uso())), obtener_campos_listables());
+        }
+        /**
+         * Desinstalación del plugin
+         * @return void
+         */
+        public static function llamar_desinstalacion()
+        {
+            desinstalar_crudinator();
         }
     }
 

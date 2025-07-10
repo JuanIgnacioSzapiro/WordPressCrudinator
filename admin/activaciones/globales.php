@@ -1,5 +1,10 @@
 <?php
 
+function cargar_superlobales()
+{
+    cargar_configuracion_desde_csv();
+}
+
 /**
  * Abre en modo lectura el archivo csv
  * @return void
@@ -8,7 +13,8 @@ function cargar_configuracion_desde_csv()
 {
     // Rutas de los archivos CSV en el directorio del plugin
     $csv_files = array(
-        plugin_dir_path(__FILE__) . '/../valores_constantes/prefijo.csv'
+        dirname(__FILE__) . '/../constantes/prefijos.csv',
+        dirname(__FILE__) . '/../constantes/campos_listables.csv'
     );
 
     // Apertura y lectura de los diferentes archivos y creación de las variables globales

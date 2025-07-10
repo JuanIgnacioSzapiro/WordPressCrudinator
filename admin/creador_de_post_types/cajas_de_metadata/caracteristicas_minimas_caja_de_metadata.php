@@ -7,6 +7,7 @@ class CaracteristicasMinimasCajaDeMetadata
     protected $descripcion_caja_de_metadata;
     protected $clonable;
     protected $opcional;
+    protected $tipo_de_dato_sql;
     /**
      * Constructor de CaracteristicasMinimasCajaDeMetadata
      * @param string $id_caja_metadata
@@ -76,6 +77,15 @@ class CaracteristicasMinimasCajaDeMetadata
     {
         $this->opcional = $valor;
     }
+    public function get_tipo_de_dato_sql()
+    {
+        return $this->tipo_de_dato_sql;
+    }
+    public function set_tipo_de_dato_sql($valor)
+    {
+        $this->tipo_de_dato_sql = $valor;
+    }
+
     /**
      * Imprime el código html
      * @param mixed $post
@@ -113,5 +123,9 @@ class CaracteristicasMinimasCajaDeMetadata
             <?php echo esc_html($this->get_descripcion_caja_de_metadata()); ?>
         </p>
         <?php
+    }
+    public function generar_caracteristicas_campo_sql()
+    {
+        return $this->get_id_caja_metadata() . ' ' . $this->get_tipo_de_dato_sql();
     }
 }
