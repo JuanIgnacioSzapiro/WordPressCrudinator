@@ -28,11 +28,3 @@ function controlar_acceso_pagina_con_shortcode()
 {
 
 }
-/**
- * Summary of obtener_campos_listables
- * @return string[]
- */
-function obtener_campos_listables()
-{
-    return explode(';', $GLOBALS['campos_listables']);
-}

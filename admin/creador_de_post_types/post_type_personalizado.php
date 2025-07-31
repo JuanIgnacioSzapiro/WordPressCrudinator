@@ -155,7 +155,7 @@ class PostTypePersonalizado extends ManejoDeWordpress
     public function registrar_post_type()
     {
         register_post_type($this->get_id_post_type(), $this->get_caracteristicas());
-        
+
         $this->set_columnas_de_wordpress();
     }
 
@@ -220,5 +220,41 @@ class PostTypePersonalizado extends ManejoDeWordpress
     public function generar_cajas_de_metadata()
     {
         $this->cajas_de_metadata->crear_cajas_de_metadata();
+    }
+    /**
+     * Devuelve el id_caja_metadata de los campos que sean clonables de un tipo de post
+     * @return array => [string => string]
+     */
+    public function get_ids_caja_metadata_campos_no_clonables()
+    {
+        $completo = [];
+        $para_fraccionar = array_filter(
+            $this->get_cajas_de_metadata()->get_contenido(),
+            function ($objeto_completo) {
+                return $objeto_completo->get_clonable() == 0;
+            }
+        );
+        foreach ($para_fraccionar as $individual) {
+            $completo = array_merge($completo, [$individual->get_id_caja_metadata() => get_class($individual)]);
+        }
+        return $completo;
+    }
+    /**
+     * Devuelve los id_caja_metadata de los campos que sean clonables de un tipo de post
+     * @return array => [int => string]
+     */
+    public function get_ids_caja_metadata_campos_clonables()
+    {
+        return array_map(
+            function ($objeto_completo) {
+                return $objeto_completo->get_id_caja_metadata();
+            },
+            array_filter(
+                $this->get_cajas_de_metadata()->get_contenido(),
+                function ($objeto_completo) {
+                    return $objeto_completo->get_clonable() == 1;
+                }
+            )
+        );
     }
 }

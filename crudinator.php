@@ -24,8 +24,9 @@ require_once dirname(__FILE__) . '/admin/areas/ejemplo_de_uso/ejemplo_de_uso.php
 require_once dirname(__FILE__) . '/admin/areas/ejemplo_de_uso/activaciones/activar_tipos_de_post_ejemplo_de_uso.php';
 require_once dirname(__FILE__) . '/admin/areas/ejemplo_de_uso/activaciones/activar_roles_ejemplo_de_uso.php';
 
+// Carga de constantes super globales
 require_once dirname(__FILE__) . '/admin/activaciones/globales.php';
-cargar_superlobales();
+cargar_superglobales();
 
 if (!class_exists('Crudinator')) {
     /**
@@ -76,7 +77,7 @@ if (!class_exists('Crudinator')) {
          */
         public function llamar_activacion()
         {
-            activar_crudinator(array_merge(array($GLOBALS['ejemplo_de_uso'] => $this->get_ejemplo_de_uso())), obtener_campos_listables());
+            activar_crudinator(array_merge(array($GLOBALS['ejemplo_de_uso'] => $this->get_ejemplo_de_uso())));
         }
         /**
          * Desactivación del plugin
@@ -84,7 +85,7 @@ if (!class_exists('Crudinator')) {
          */
         public function llamar_desactivacion()
         {
-            desactivar_crudinator(array_merge(array($GLOBALS['ejemplo_de_uso'] => $this->get_ejemplo_de_uso())), obtener_campos_listables());
+            desactivar_crudinator(array_merge(array($GLOBALS['ejemplo_de_uso'] => $this->get_ejemplo_de_uso())));
         }
         /**
          * Desinstalación del plugin

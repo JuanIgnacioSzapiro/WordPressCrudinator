@@ -2,7 +2,6 @@
 class CaracteristicasMinimasCajaDeMetadata
 {
     protected $id_caja_metadata;
-    protected $metakey;
     protected $etiqueta_caja_de_metadata;
     protected $descripcion_caja_de_metadata;
     protected $clonable;
@@ -20,7 +19,7 @@ class CaracteristicasMinimasCajaDeMetadata
         $id_caja_metadata,
         $etiqueta_caja_de_metadata,
         $descripcion_caja_de_metadata,
-        $clonable,
+        $clonable = null,
         $opcional = true
     ) {
         $this->set_id_caja_metadata($id_caja_metadata);
@@ -36,14 +35,6 @@ class CaracteristicasMinimasCajaDeMetadata
     public function set_id_caja_metadata($valor)
     {
         $this->id_caja_metadata = $valor;
-    }
-    public function get_metakey()
-    {
-        return $this->metakey;
-    }
-    public function set_metakey($valor)
-    {
-        $this->metakey = $valor;
     }
     public function get_etiqueta_caja_de_metadata()
     {
