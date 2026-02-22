@@ -100,7 +100,8 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
     {
         ?>
         <p>
-            <input type="<?php echo !$this->get_es_clave()?'text':'password' ?>" id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>"
+            <input type="<?php echo !$this->get_es_clave() ? 'text' : 'password' ?>"
+                id="<?php echo esc_attr($this->get_id_caja_metadata()); ?>"
                 name="<?php echo esc_attr($this->get_id_caja_metadata()); ?>" value="<?php ?>"
                 placeholder="<?php echo esc_attr($this->get_texto_ejemplificatorio()); ?>" style="width: 100%; margin: 0%;" />
         </p>
@@ -152,7 +153,6 @@ class CajaDeTexto extends CaracteristicasMinimasCajaDeMetadata
                             });
                     };
                 }
-
                 // Initialize when DOM is ready
                 $(document).ready(function () {
                     if (!window.clonableFieldsInitialized_texto) {

@@ -13,19 +13,8 @@ require_once dirname(__FILE__) . '/admin/base_de_datos/manejo_sql.php';
  */
 function activar_crudinator($tipos_de_post)
 {
-    // Métodos públicos para hooks
-    add_action('wp_enqueue_scripts', 'cargar_recursos'); // Carga de js y css
     // Creacion de bases de datos
     crear_totalidad_de_base_de_datos($tipos_de_post);
-}
-/**
- * Carga de recursos de estilos (css) y scripts (js) PROPIOS DE ESTE PLUGIN
- * @return void
- */
-function cargar_recursos()
-{
-    crudinator_cargar_estilos(); // Carga de archivos css
-    crudinator_cargar_scripts(); // Carga de archivos js
 }
 /**
  * Crea las tablas sql según se requiera
@@ -38,25 +27,27 @@ function crear_totalidad_de_base_de_datos($tipos_de_post_con_prefijo_de_area)
     $contenido_no_clonable = [];
     $fragmento_de_query_para_columnas = '';
     $contador_de_comas = 0;
+    $manejo_de_sql = new ManejoDeSQL;
+    $conversor_de_datos = new ConversorDeDatos;
     foreach ($tipos_de_post_con_prefijo_de_area as $prefijo_de_area => $tipos_de_post) {
         foreach ($tipos_de_post as $tipo_de_post) {
             $fragmento_de_query_para_columnas = '';
             $contador_de_comas = 0;
             // Se filtran los ids y las clases de los diferentes tipos de contenido
-            $contenido_no_clonable = $tipo_de_post->get_ids_caja_metadata_campos_no_clonables();
+            $contenido_no_clonable = $tipo_de_post->get_ids_caja_metadata_campos(0);
             foreach ($contenido_no_clonable as $id_contenido => $caso) {
                 // Se arma un único fragmento de query para crear las columnas
-                $fragmento_de_query_para_columnas .= $id_contenido . ' ' . clase_a_tipo_de_dato_sql($caso) . ($contador_de_comas < count($contenido_no_clonable) - 1 ? ', ' : '');
+                $fragmento_de_query_para_columnas .= $id_contenido . ' ' . $conversor_de_datos->clase_a_tipo_de_dato_sql($caso) . ($contador_de_comas < count($contenido_no_clonable) - 1 ? ', ' : '');
                 $contador_de_comas += 1;
             }
             // Creación de la tabla principal
-            crear_tabla($tipo_de_post->get_id_post_type(), $prefijo_de_area, $fragmento_de_query_para_columnas);
+            $manejo_de_sql->crear_tabla($tipo_de_post->get_id_post_type(), $prefijo_de_area, $fragmento_de_query_para_columnas);
             // Creación de sus tablas relacionales
-            foreach ($tipo_de_post->get_ids_caja_metadata_campos_clonables() as $nombre_tabla_relacional) {
+            foreach ($tipo_de_post->get_ids_caja_metadata_campos(1) as $id_contenido => $caso) {
                 // Creación de tablas intermedias (listas)
-                crear_tabla($nombre_tabla_relacional, $prefijo_de_area . '_' . $tipo_de_post->get_id_post_type() . '_listado_de', 'id_' . $tipo_de_post->get_id_post_type() . ' INT, id_' . $nombre_tabla_relacional . ' INT');
+                $manejo_de_sql->crear_tabla($id_contenido, $prefijo_de_area . '_' . $tipo_de_post->get_id_post_type() . '_listado_de', 'id_' . $tipo_de_post->get_id_post_type() . ' INT, id_' . $id_contenido . ' INT');
                 // Creación de tablas 'hoja'
-                crear_tabla($nombre_tabla_relacional, $prefijo_de_area . '_' . $tipo_de_post->get_id_post_type(), 'valor TEXT');
+                $manejo_de_sql->crear_tabla($id_contenido, $prefijo_de_area . '_' . $tipo_de_post->get_id_post_type(), 'valor ' . $conversor_de_datos->clase_a_tipo_de_dato_sql($caso));
             }
         }
     }

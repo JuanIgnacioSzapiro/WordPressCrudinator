@@ -1,12 +1,10 @@
 <?php
-require_once dirname(__FILE__) . '/cajas_de_metadata/cajas_de_metadata.php';
-require_once dirname(__FILE__) . '/manejo_de_wordpress.php';
+require_once dirname(__FILE__) . '/caracteristicas_minimas_post_type.php';
 require_once dirname(__FILE__) . '/columnas/columnas.php';
-
 /**
  * Creador de tipos de post con todos sus componentes
  */
-class PostTypePersonalizado extends ManejoDeWordpress
+class PostTypePersonalizado extends CaracteristicasMinimasPostType
 {
     private $singular;
     private $plural;
@@ -223,38 +221,30 @@ class PostTypePersonalizado extends ManejoDeWordpress
     }
     /**
      * Devuelve el id_caja_metadata de los campos que sean clonables de un tipo de post
+     * @param int $clonables el valor debe ser 0 o 1 según sea verdadero o falso
      * @return array => [string => string]
      */
-    public function get_ids_caja_metadata_campos_no_clonables()
+    public function get_ids_caja_metadata_campos($clonables)
     {
         $completo = [];
-        $para_fraccionar = array_filter(
-            $this->get_cajas_de_metadata()->get_contenido(),
-            function ($objeto_completo) {
-                return $objeto_completo->get_clonable() == 0;
-            }
-        );
-        foreach ($para_fraccionar as $individual) {
-            $completo = array_merge($completo, [$individual->get_id_caja_metadata() => get_class($individual)]);
-        }
-        return $completo;
-    }
-    /**
-     * Devuelve los id_caja_metadata de los campos que sean clonables de un tipo de post
-     * @return array => [int => string]
-     */
-    public function get_ids_caja_metadata_campos_clonables()
-    {
-        return array_map(
-            function ($objeto_completo) {
-                return $objeto_completo->get_id_caja_metadata();
-            },
-            array_filter(
+        if ($clonables == 0) {
+            $para_fraccionar = array_filter(
+                $this->get_cajas_de_metadata()->get_contenido(),
+                function ($objeto_completo) {
+                    return $objeto_completo->get_clonable() == 0;
+                }
+            );
+        } else {
+            $para_fraccionar = array_filter(
                 $this->get_cajas_de_metadata()->get_contenido(),
                 function ($objeto_completo) {
                     return $objeto_completo->get_clonable() == 1;
                 }
-            )
-        );
+            );
+        }
+        foreach ($para_fraccionar as $individual) {
+            $completo = array_merge($completo, [$individual->get_id_caja_metadata() => get_class($individual)]);
+        }
+        return $completo;
     }
 }

@@ -28,6 +28,10 @@ class CaracteristicasMinimasCajaDeMetadata
         $this->set_clonable($clonable);
         $this->set_opcional($opcional);
     }
+    /**
+     * Summary of get_id_caja_metadata
+     * @return string
+     */
     public function get_id_caja_metadata()
     {
         return $this->id_caja_metadata;
@@ -78,7 +82,7 @@ class CaracteristicasMinimasCajaDeMetadata
     }
 
     /**
-     * Imprime el código html
+     * Imprime el código html en caso de que no haya código html propio del campo
      * @param mixed $post
      */
     public function generar_fragmento_html($post)
@@ -87,7 +91,10 @@ class CaracteristicasMinimasCajaDeMetadata
         <p>El campo con id '<?php $this->get_id_caja_metadata() ?>' no está disponible</p>
         <?php
     }
-
+    /**
+     * Imprime código hmtl en caso de que el campo no sea opcional
+     * @return void
+     */
     protected function generar_html_label_no_opcional()
     {
         ?>
@@ -96,6 +103,10 @@ class CaracteristicasMinimasCajaDeMetadata
         </label>
         <?php
     }
+    /**
+     * Imprime código hmtl en caso de que el campo sea opcional
+     * @return void
+     */
     protected function generar_html_label_opcional()
     {
         ?>
@@ -107,6 +118,10 @@ class CaracteristicasMinimasCajaDeMetadata
         </div>
         <?php
     }
+    /**
+     * Imprime la descripción de la la caja de metadata
+     * @return void
+     */
     protected function generar_html_descripcion()
     {
         ?>
@@ -115,6 +130,10 @@ class CaracteristicasMinimasCajaDeMetadata
         </p>
         <?php
     }
+    /**
+     * Genera un fragmento del id del campo con su tipo de dato sql
+     * @return string
+     */
     public function generar_caracteristicas_campo_sql()
     {
         return $this->get_id_caja_metadata() . ' ' . $this->get_tipo_de_dato_sql();

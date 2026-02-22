@@ -8,6 +8,8 @@ class CaracteristicasMinimasPostType
 {
     private $id_post_type;
 
+    private $para_armar_columnas;
+
     public function __construct(
         $id_post_type,
     ) {
@@ -42,5 +44,12 @@ class CaracteristicasMinimasPostType
             'create_posts' => 'create_multiples_' . $this->get_id_post_type(),
         ];
     }
-
+    public function set_para_armar_columnas($valor)
+    {
+        $this->para_armar_columnas = $valor;
+    }
+    public function get_para_armar_columnas()
+    {
+        return $this->para_armar_columnas;
+    }
 }

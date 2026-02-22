@@ -1,7 +1,6 @@
 <?php
-
+require_once dirname(__FILE__) . '/../../base_de_datos/carriles_de_datos.php';
 use function PHPSTORM_META\map;
-
 class CajasDeMetadata
 {
     protected $id_post_type_perteneciente;  // Se obtiene a través de la función seder_id_post_type_perteneciente() perteneciente a la clase PostTypePersonalizado
@@ -56,8 +55,10 @@ class CajasDeMetadata
      */
     public function crear_cajas_de_metadata()
     {
+        // Agrega las cajas de edición de metadata
         add_action('add_meta_boxes', array($this, 'crear_editor_cajas_de_metadata'));
-        add_action('save_post', array($this, 'guardar_contenido_de_cajas_de_metadata'));
+        // Agrega a través de la función la capacidad de guardar la información
+        add_action('save_post', array($this, 'guardado_de_metadata_wordpress'));
     }
     /**
      * Se muestran las cajas de metadata previamente agregadas
@@ -141,37 +142,11 @@ class CajasDeMetadata
     }
     public function inicializar_caja($post, $caja_metadata_individual)
     {
-        $caja_metadata_individual->set_metakey(
-            $this->get_id_creador_cajas_de_metadata()
-        );
         $caja_metadata_individual->generar_fragmento_html($post);
     }
-    public function guardar_contenido_de_cajas_de_metadata()
+    public function guardado_de_metadata_wordpress($post_id)
     {
-    }
-    public function mostrar_errores()
-    {
-        global $post;
-
-        if (!$post || $post->post_type !== $this->get_id_creador_cajas_de_metadata()) {
-            return;
-        }
-
-        $transient_key = 'inpsc_meta_errors_' . $post->ID;
-        $errors = get_transient($transient_key);
-
-        if ($errors) {
-            delete_transient($transient_key);
-            ?>
-            <div class="notice notice-error is-dismissible">
-                <p><strong><?php _e('Error:', 'text-domain'); ?></strong></p>
-                <ul>
-                    <?php foreach ($errors as $error): ?>
-                        <li><?php echo esc_html($error); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <?php
-        }
+        $carriles_de_datos = new CarrilesDeDatos();
+        $carriles_de_datos->entrada_a_base_de_datos($post_id, $this->get_id_post_type_perteneciente(), $this->get_contenido());
     }
 }

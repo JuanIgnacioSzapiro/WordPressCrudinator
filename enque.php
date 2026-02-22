@@ -1,5 +1,16 @@
 <?php
 /**
+ * Carga de recursos de estilos (css) y scripts (js) PROPIOS DE ESTE PLUGIN
+ */
+add_action('wp_enqueue_scripts', 'cargar_recursos');
+
+function cargar_recursos()
+{
+    crudinator_cargar_estilos();
+    crudinator_cargar_scripts();
+}
+
+/**
  * Registro y encolación de estilos (css)
  */
 function crudinator_cargar_estilos()

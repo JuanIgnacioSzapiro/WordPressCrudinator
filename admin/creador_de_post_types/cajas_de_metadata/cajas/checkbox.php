@@ -46,9 +46,9 @@ class Checkbox extends CaracteristicasMinimasCajaDeMetadata
     {
         // Generar checkboxes para cada opción
         foreach ($this->get_opciones() as $key => $opcion) {
-            // $input_id = $meta_key . '_' . $key;
-            // $checked = in_array($opcion, $saved_values) ? 'checked="checked"' : '';
             $cadena = $this->get_id_caja_metadata() . '_' . $key;
+            // $input_id = $this->get_id_caja_metadata() . '_' . $key;
+            // $checked = in_array($opcion, $saved_values) ? 'checked="checked"' : '';
             ?>
             <input type="checkbox" id="<?php echo esc_attr($cadena); ?>" name="<?php echo esc_attr($cadena); ?>[]"
                 value="<?php echo esc_attr($opcion); ?>" <?php

@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/../manejo_de_wordpress.php';
+require_once dirname(__FILE__) . '/../caracteristicas_minimas_post_type.php';
 require_once dirname(__FILE__) . '/../../funciones.php';
 
-class ColumnasDeWordpress extends ManejoDeWordpress
+class ColumnasDeWordpress extends CaracteristicasMinimasPostType
 {
     /**
      * Constructor de ColumnasDeWordpress
